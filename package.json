@@ -1,0 +1,16 @@
+{
+  "name": "tdd-usecase-ts",
+  "version": "1.0.0",
+  "description": "Develop a business logic workflow class, or use case, in TypeScript using Test-Driven Development.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.6.3"
+  }
+}

@@ -10,9 +10,15 @@ describe("When call register()", () => {
         verifyThrowMissingFirstName(register);
     });
 
-    
+    it("without customer.lastname, Then throw MissingLastName error.", () => {
+        const usecase = new RegisterCustomerUseCase();
+        const register = () => usecase.register({ });
+        expect(register).toThrow(new MissingLastName());
+    });
+
+
     function verifyThrowMissingFirstName(register: () => void) {
         expect(register).toThrow(new MissingFirstName());
         expect(register).toThrow("Missing first name.");
-    }    
+    }
 });

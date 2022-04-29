@@ -1,5 +1,5 @@
 import RegisterCustomerUseCase from "../src/RegisterCustomerUseCase";
-import { MissingFirstName } from "../src/errors";
+import { MissingFirstName, MissingLastName } from "../src/errors";
 
 
 describe("When call register()", () => {
@@ -12,7 +12,7 @@ describe("When call register()", () => {
 
     it("without customer.lastname, Then throw MissingLastName error.", () => {
         const usecase = new RegisterCustomerUseCase();
-        const register = () => usecase.register({ });
+        const register = () => usecase.register({ firstname: "Fred" });
         expect(register).toThrow(new MissingLastName());
     });
 

@@ -3,3 +3,7 @@ export class MissingFirstName extends Error {
         super("Missing first name.");
     }
 }
+
+export class MissingLastName extends Error {
+    
+}

@@ -19,8 +19,7 @@ describe("When call register()", () => {
     it("without customer.email, Then throw MissingEmailAddress error.", () => {
         const usecase = new RegisterCustomerUseCase();
         const register = () => usecase.register({ firstname: "Fred", lastname: "Flintstone", email: "" });
-        expect(register).toThrow(new MissingEmailAddress());
-        expect(register).toThrow("Missing email address.");
+        verifyThrowMissingEmailAddress(register);
     });
 
 
@@ -32,6 +31,11 @@ describe("When call register()", () => {
     function verifyThrowMissingLastName(register: () => void) {
         expect(register).toThrow(new MissingLastName());
         expect(register).toThrow("Missing last name.");
+    }
+
+    function verifyThrowMissingEmailAddress(register: () => void) {
+        expect(register).toThrow(new MissingEmailAddress());
+        expect(register).toThrow("Missing email address.");
     }
 });
 

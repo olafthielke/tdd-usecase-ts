@@ -14,6 +14,7 @@ describe("When call register()", () => {
         const usecase = new RegisterCustomerUseCase();
         const register = () => usecase.register({ firstname: "Fred" });
         expect(register).toThrow(new MissingLastName());
+        expect(register).toThrow("Missing last name.");
     });
 
 

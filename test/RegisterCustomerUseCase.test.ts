@@ -6,13 +6,13 @@ describe("When call register()", () => {
 
     it("without customer.firstname, Then throw MissingFirstName error.", () => {
         const usecase = new RegisterCustomerUseCase();
-        const register = () => usecase.register({ lastname: "Flintstone"});
+        const register = () => usecase.register({ firstname: "", lastname: "Flintstone" });
         verifyThrowMissingFirstName(register);
     });
 
     it("without customer.lastname, Then throw MissingLastName error.", () => {
         const usecase = new RegisterCustomerUseCase();
-        const register = () => usecase.register({ firstname: "Fred" });
+        const register = () => usecase.register({ firstname: "Fred", lastname: "" });
         verifyThrowMissingLastName(register);
     });
 

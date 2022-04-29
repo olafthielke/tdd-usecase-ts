@@ -9,3 +9,7 @@ export class MissingLastName extends Error {
         super("Missing last name.");
     }
 }
+
+export class MissingEmailAddress extends Error {
+    
+}

@@ -1,4 +1,5 @@
 import RegisterCustomerUseCase from "../src/RegisterCustomerUseCase";
+import { MissingFirstName } from "../src/errors";
 
 
 describe("When construct RegisterCustomerUseCase", () => {
@@ -9,11 +10,6 @@ describe("When construct RegisterCustomerUseCase", () => {
 });
 
 describe("When call register()", () => {
-
-    it("Then can call register().", () => {
-        const usecase = new RegisterCustomerUseCase();
-        usecase.register();
-    });
 
     it("without customer.firstname, Then throw MissingFirstName error.", () => {
         const usecase = new RegisterCustomerUseCase();

@@ -1,6 +1,6 @@
 export default class RegisterCustomerUseCase {
 
-    public register() {
+    public register(customer: any) {
 
     }
 }

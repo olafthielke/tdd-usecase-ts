@@ -1,5 +1,5 @@
 import Customer from "./Customer";
-import { MissingFirstName, MissingLastName } from "./errors";
+import { MissingEmailAddress, MissingFirstName, MissingLastName } from "./errors";
 
 
 export default class RegisterCustomerUseCase {
@@ -7,6 +7,8 @@ export default class RegisterCustomerUseCase {
     public register(customer: Customer) {
         if (!customer.firstname)
             throw new MissingFirstName();
-        throw new MissingLastName();
+        if (!customer.lastname)
+            throw new MissingLastName();
+        throw new MissingEmailAddress();
     }
 }

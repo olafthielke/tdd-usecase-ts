@@ -1,9 +1,11 @@
-import { MissingFirstName } from "./errors";
+import { MissingFirstName, MissingLastName } from "./errors";
 
 
 export default class RegisterCustomerUseCase {
 
     public register(customer: any) {
-        throw new MissingFirstName();
+        if (!customer.firstname)
+            throw new MissingFirstName();
+        throw new MissingLastName();
     }
 }

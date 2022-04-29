@@ -20,6 +20,7 @@ describe("When call register()", () => {
         const usecase = new RegisterCustomerUseCase();
         const register = () => usecase.register({ firstname: "Fred", lastname: "Flintstone", email: "" });
         expect(register).toThrow(new MissingEmailAddress());
+        expect(register).toThrow("Missing email address.");
     });
 
 

@@ -5,5 +5,7 @@ export class MissingFirstName extends Error {
 }
 
 export class MissingLastName extends Error {
-    
+    constructor() {
+        super("Missing last name.");
+    }
 }

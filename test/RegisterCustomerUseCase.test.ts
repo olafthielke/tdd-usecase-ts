@@ -8,6 +8,6 @@ describe("When call register()", () => {
         const usecase = new RegisterCustomerUseCase();
         const register = () => usecase.register({ });
         expect(register).toThrow(new MissingFirstName());
+        expect(register).toThrow("Missing first name.");
     });
 });
-

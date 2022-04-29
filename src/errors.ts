@@ -11,5 +11,7 @@ export class MissingLastName extends Error {
 }
 
 export class MissingEmailAddress extends Error {
-    
+    constructor() {
+        super("Missing email address.");
+    }
 }

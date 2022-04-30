@@ -29,7 +29,7 @@ describe("When call register()", () => {
         };
         const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
         usecase.register({ firstname: "Fred", lastname: "Flintstone", email: "fred@flintstones.rock" });
-        expect(mockCustomerRepo.getCustomer).toHaveBeenCalled();
+        expect(mockCustomerRepo.getCustomer).toHaveBeenCalledWith("fred@flintstones.rock");
     });
 
 

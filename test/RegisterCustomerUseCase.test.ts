@@ -22,6 +22,15 @@ describe("When call register()", () => {
         verifyThrowMissingEmailAddress(register);
     });
 
+    it("for a valid customer, Then call out to CustomerRepository to try and get customer by email address.", () => {
+        const mockCustomerRepo: ICustomerRepository = {
+            getCustomer: jest.fn(() => { return null; })
+        };
+        const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
+        usecase.register({ firstname: "Fred", lastname: "Flintstone", email: "fred@flintstones.rock" });
+        expect(mockCustomerRepo.getCustomer).toHaveBeenCalled();
+    });
+
 
     function verifyThrowMissingFirstName(register: () => void) {
         expect(register).toThrow(new MissingFirstName());

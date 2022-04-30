@@ -14,6 +14,9 @@ export default class RegisterCustomerUseCase {
             throw new MissingFirstName();
         if (!customer.lastname)
             throw new MissingLastName();
-        throw new MissingEmailAddress();
+        if (!customer.email)
+            throw new MissingEmailAddress();
+
+        this.customerRepo.getCustomer("email address");
     }
 }

@@ -1,5 +1,5 @@
 import Customer from "./Customer";
-import { MissingEmailAddress, MissingFirstName, MissingLastName } from "./errors";
+import { DuplicateCustomerEmailAddress, MissingEmailAddress, MissingFirstName, MissingLastName } from "./errors";
 import ICustomerRepository from "./ICustomerRepository";
 
 
@@ -11,7 +11,9 @@ export default class RegisterCustomerUseCase {
 
     public register(customer: Customer) {
         this.validate(customer);
-        this.customerRepo.getCustomer(customer.email);
+        const existingCustomer = this.customerRepo.getCustomer(customer.email);
+        if (existingCustomer)
+            throw new DuplicateCustomerEmailAddress();
     }
 
     private validate(customer: Customer) {

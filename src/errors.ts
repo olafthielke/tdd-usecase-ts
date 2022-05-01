@@ -17,5 +17,7 @@ export class MissingEmailAddress extends Error {
 }
 
 export class DuplicateCustomerEmailAddress extends Error {
-    
+    constructor() {
+        super("Customer with email address 'fred@flintstones.rock' already exists.");
+    }
 }

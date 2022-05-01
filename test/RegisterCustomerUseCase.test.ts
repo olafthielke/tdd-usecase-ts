@@ -36,13 +36,17 @@ describe("When call register()", () => {
         expect(mockCustomerRepo.getCustomer).toHaveBeenCalledWith(customer.email);
     });
 
-    it("for a customer that already exists in the system, then throw DuplicateCustomerEmailAddress error.", () => {
-        const customer = new Customer("Fred", "Flintstone", "fred@flintstones.rock");
+    it.each([["fred@flintstones.rock", "Fred", "Flintstone"],
+             ["barney.rubble@rockwell.com", "Barney", "Rubble"],
+             ["wilma@flintstones.rock", "Wilma", "Flintstone"]])
+    ("for customer with email address %s that already exists in the system, then throw DuplicateCustomerEmailAddress error.", 
+    (email, firstname, lastname) => {
+        const customer = new Customer(firstname, lastname, email);
         const mockCustomerRepo = setupMockCustomerRepo(customer);
         const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
         const register = () => usecase.register(customer);
-        expect(register).toThrow(new DuplicateCustomerEmailAddress());
-        expect(register).toThrow("Customer with email address 'fred@flintstones.rock' already exists.");
+        expect(register).toThrow(DuplicateCustomerEmailAddress);
+        expect(register).toThrow(`Customer with email address '${email}' already exists.`);
     });
 
 

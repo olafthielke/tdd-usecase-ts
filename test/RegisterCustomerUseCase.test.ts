@@ -25,7 +25,8 @@ describe("When call register()", () => {
     });
 
     it.each([["fred@flintstones.rock", "Fred", "Flintstone"],
-             ["barney.rubble@rockwell.com", "Barney", "Rubble"]])
+             ["barney.rubble@rockwell.com", "Barney", "Rubble"],
+             ["wilma@flintstones.rock", "Wilma", "Flintstone"]])
     ("for a valid customer with email address %s, Then call out to CustomerRepository to try and get customer by email address.", 
     (email, firstname, lastname) => {
         const customer = new Customer(firstname, lastname, email);

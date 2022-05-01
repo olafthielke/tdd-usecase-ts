@@ -36,6 +36,13 @@ describe("When call register()", () => {
         expect(mockCustomerRepo.getCustomer).toHaveBeenCalledWith(customer.email);
     });
 
+    it("for a customer that already exists in the system, then throw DuplicateCustomerEmailAddress error.", () => {
+        const customer = new Customer("Fred", "Flintstone", "fred@flintstones.rock");
+        const mockCustomerRepo = setupMockCustomerRepo(customer);
+        const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
+        const register = () => usecase.register(customer);
+        expect(register).toThrow(new DuplicateCustomerEmailAddress());
+    });
 
 
     function setupMockCustomerRepo(getCustomerReturnValue: Customer | null = null): ICustomerRepository {

@@ -17,6 +17,6 @@ export default class RegisterCustomerUseCase {
         if (!customer.email)
             throw new MissingEmailAddress();
 
-        this.customerRepo.getCustomer("fred@flintstones.rock");
+        this.customerRepo.getCustomer(customer.email);
     }
 }

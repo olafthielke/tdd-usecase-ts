@@ -1,5 +1,5 @@
 import RegisterCustomerUseCase from "../src/RegisterCustomerUseCase";
-import { MissingFirstName, MissingLastName, MissingEmailAddress } from "../src/errors";
+import { MissingFirstName, MissingLastName, MissingEmailAddress, DuplicateCustomerEmailAddress } from "../src/errors";
 import ICustomerRepository from "../src/ICustomerRepository";
 import Customer from "../src/Customer";
 

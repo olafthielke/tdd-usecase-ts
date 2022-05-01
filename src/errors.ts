@@ -15,3 +15,7 @@ export class MissingEmailAddress extends Error {
         super("Missing email address.");
     }
 }
+
+export class DuplicateCustomerEmailAddress extends Error {
+    
+}

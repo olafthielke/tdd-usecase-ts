@@ -45,8 +45,7 @@ describe("When call register()", () => {
         const mockCustomerRepo = setupMockCustomerRepo(customer);
         const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
         const register = () => usecase.register(customer);
-        expect(register).toThrow(DuplicateCustomerEmailAddress);
-        expect(register).toThrow(`Customer with email address '${email}' already exists.`);
+        verifyThrowDuplicateCustomerEmailAddress(register, email);
     });
 
 
@@ -69,6 +68,11 @@ describe("When call register()", () => {
     function verifyThrowMissingEmailAddress(register: () => void) {
         expect(register).toThrow(new MissingEmailAddress());
         expect(register).toThrow("Missing email address.");
+    }
+
+    function verifyThrowDuplicateCustomerEmailAddress(register: () => void, email: string) {
+        expect(register).toThrow(DuplicateCustomerEmailAddress);
+        expect(register).toThrow(`Customer with email address '${email}' already exists.`);
     }
 });
 

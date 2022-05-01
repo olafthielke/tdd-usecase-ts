@@ -42,6 +42,7 @@ describe("When call register()", () => {
         const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
         const register = () => usecase.register(customer);
         expect(register).toThrow(new DuplicateCustomerEmailAddress());
+        expect(register).toThrow("Customer with email address 'fred@flintstones.rock' already exists.");
     });
 
 

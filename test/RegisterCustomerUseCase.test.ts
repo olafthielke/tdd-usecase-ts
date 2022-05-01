@@ -1,6 +1,7 @@
 import RegisterCustomerUseCase from "../src/RegisterCustomerUseCase";
 import { MissingFirstName, MissingLastName, MissingEmailAddress } from "../src/errors";
 import ICustomerRepository from "../src/ICustomerRepository";
+import Customer from "../src/Customer";
 
 
 describe("When call register()", () => {
@@ -23,24 +24,24 @@ describe("When call register()", () => {
         verifyThrowMissingEmailAddress(register);
     });
 
-    it("for a valid customer, Then call out to CustomerRepository to try and get customer by email address.", () => {
-        const mockCustomerRepo: ICustomerRepository = {
-            getCustomer: jest.fn(() => { return null; })
-        };
+    it.each([["fred@flintstones.rock", "Fred", "Flintstone"],
+             ["barney.rubble@rockwell.com", "Barney", "Rubble"]])
+    ("for a valid customer with email address %s, Then call out to CustomerRepository to try and get customer by email address.", 
+    (email, firstname, lastname) => {
+        const customer = new Customer(firstname, lastname, email);
+        const mockCustomerRepo = setupMockCustomerRepo();
         const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
-        usecase.register({ firstname: "Fred", lastname: "Flintstone", email: "fred@flintstones.rock" });
-        expect(mockCustomerRepo.getCustomer).toHaveBeenCalledWith("fred@flintstones.rock");
+        usecase.register(customer);
+        expect(mockCustomerRepo.getCustomer).toHaveBeenCalledWith(customer.email);
     });
 
-    it("for another valid customer, Then call out to CustomerRepository to try and get customer by email address.", () => {
-        const mockCustomerRepo: ICustomerRepository = {
-            getCustomer: jest.fn(() => { return null; })
-        };
-        const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
-        usecase.register({ firstname: "Barney", lastname: "Rubble", email: "barney.rubble@rockwell.com" });
-        expect(mockCustomerRepo.getCustomer).toHaveBeenCalledWith("barney.rubble@rockwell.com");
-    });
 
+
+    function setupMockCustomerRepo(getCustomerReturnValue: Customer | null = null): ICustomerRepository {
+        return {
+            getCustomer: jest.fn(() => { return getCustomerReturnValue; })
+        };
+    }
 
     function verifyThrowMissingFirstName(register: () => void) {
         expect(register).toThrow(new MissingFirstName());

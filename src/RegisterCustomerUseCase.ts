@@ -10,13 +10,16 @@ export default class RegisterCustomerUseCase {
     }
 
     public register(customer: Customer) {
+        this.validate(customer);
+        this.customerRepo.getCustomer(customer.email);
+    }
+
+    private validate(customer: Customer) {
         if (!customer.firstname)
             throw new MissingFirstName();
         if (!customer.lastname)
             throw new MissingLastName();
         if (!customer.email)
             throw new MissingEmailAddress();
-
-        this.customerRepo.getCustomer(customer.email);
     }
 }

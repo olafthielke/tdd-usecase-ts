@@ -1,5 +1,6 @@
-export default interface Customer {
-    firstname: string;
-    lastname: string;
-    email: string;
+export default class Customer {
+
+    constructor(public readonly firstname: string,
+        public readonly lastname: string,
+        public readonly email: string) { }
 }

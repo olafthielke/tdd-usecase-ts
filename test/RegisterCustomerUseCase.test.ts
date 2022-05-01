@@ -32,6 +32,15 @@ describe("When call register()", () => {
         expect(mockCustomerRepo.getCustomer).toHaveBeenCalledWith("fred@flintstones.rock");
     });
 
+    it("for another valid customer, Then call out to CustomerRepository to try and get customer by email address.", () => {
+        const mockCustomerRepo: ICustomerRepository = {
+            getCustomer: jest.fn(() => { return null; })
+        };
+        const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
+        usecase.register({ firstname: "Barney", lastname: "Rubble", email: "barney.rubble@rockwell.com" });
+        expect(mockCustomerRepo.getCustomer).toHaveBeenCalledWith("barney.rubble@rockwell.com");
+    });
+
 
     function verifyThrowMissingFirstName(register: () => void) {
         expect(register).toThrow(new MissingFirstName());

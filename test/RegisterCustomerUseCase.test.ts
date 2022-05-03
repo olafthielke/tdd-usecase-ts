@@ -39,7 +39,7 @@ describe("When call register()", () => {
     it.each([["fred@flintstones.rock", "Fred", "Flintstone"],
              ["barney.rubble@rockwell.com", "Barney", "Rubble"],
              ["wilma@flintstones.rock", "Wilma", "Flintstone"]])
-    ("for customer with email address %s that already exists in the system, then throw DuplicateCustomerEmailAddress error.", 
+    ("for customer with email address %s that already exists in the system, Then throw DuplicateCustomerEmailAddress error.", 
     (email, firstname, lastname) => {
         const customer = new Customer(firstname, lastname, email);
         const mockCustomerRepo = setupMockCustomerRepo(customer);
@@ -47,6 +47,14 @@ describe("When call register()", () => {
         const register = () => usecase.register(customer);
         verifyThrowDuplicateCustomerEmailAddress(register, email);
     });
+
+    it("for new customer, Then save customer to the system.", () =>{
+        const customer = new Customer("Fred", "Flintstone", "fred@flintstones.rock");
+        const mockCustomerRepo = setupMockCustomerRepo(customer);
+        const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
+        usecase.register(customer);
+        expect(mockCustomerRepo.saveCustomer).toHaveBeenCalled();
+    })
 
 
     function setupMockCustomerRepo(getCustomerReturnValue: Customer | null = null): ICustomerRepository {

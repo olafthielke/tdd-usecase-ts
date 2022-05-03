@@ -11,9 +11,7 @@ export default class RegisterCustomerUseCase {
 
     public register(customer: Customer) {
         this.validate(customer);
-        this.customerRepo.saveCustomer({ firstname: "Fred", 
-                                         lastname: "Flintstone", 
-                                         email: "fred@flintstones.rock" });
+        this.customerRepo.saveCustomer(customer);
     }
 
     private validate(customer: Customer) {

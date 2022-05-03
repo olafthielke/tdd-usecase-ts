@@ -1,7 +1,7 @@
 import Customer from "./Customer";
 import { DuplicateCustomerEmailAddress, MissingEmailAddress, MissingFirstName, MissingLastName } from "./errors";
 import ICustomerRepository from "./ICustomerRepository";
-
+import { v4 as uuidv4 } from 'uuid';
 
 export default class RegisterCustomerUseCase {
 
@@ -11,6 +11,9 @@ export default class RegisterCustomerUseCase {
 
     public register(customer: Customer) {
         this.validate(customer);
+
+        customer.id = uuidv4();
+
         this.customerRepo.saveCustomer(customer);
     }
 

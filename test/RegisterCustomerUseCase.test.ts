@@ -56,8 +56,9 @@ describe("When call register()", () => {
         const mockCustomerRepo = setupMockCustomerRepo();
         const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
         usecase.register(customer);
-        expect(mockCustomerRepo.saveCustomer).toHaveBeenCalled();
-    })
+        expect(mockCustomerRepo.saveCustomer).toHaveBeenCalledWith({ firstname: "Fred", 
+                                                                     lastname: "Flintstone", 
+                                                                     email: "fred@flintstones.rock" });    });
 
 
     function setupMockCustomerRepo(getCustomerReturnValue: Customer | null = null): ICustomerRepository {

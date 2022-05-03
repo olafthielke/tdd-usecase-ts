@@ -60,7 +60,10 @@ describe("When call register()", () => {
         const mockCustomerRepo = setupMockCustomerRepo();
         const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
         usecase.register(customer);
-        expect(mockCustomerRepo.saveCustomer).toHaveBeenCalledWith(customer);
+        expect(mockCustomerRepo.saveCustomer).toHaveBeenCalledWith({ firstname: firstname,
+                                                                     lastname: lastname,
+                                                                     email: email,
+                                                                     id: expect.any(String) }); // uuid
     });
 
 

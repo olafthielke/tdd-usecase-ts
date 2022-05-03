@@ -51,14 +51,17 @@ describe("When call register()", () => {
         verifyThrowDuplicateCustomerEmailAddress(register, email);
     });
 
-    it("for new customer, Then save customer to the system.", () =>{
-        const customer = new Customer("Fred", "Flintstone", "fred@flintstones.rock");
+    it.each([["Fred", "Flintstone", "fred@flintstones.rock"],
+             ["Barney", "Rubble", "barney.rubble@rockwell.com"]])    
+    ("for new customer %s %s with email address %s, Then save customer to the system.", 
+        (firstname, lastname, email) => {
+        const customer = new Customer(firstname, lastname, email);
         const mockCustomerRepo = setupMockCustomerRepo();
         const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
         usecase.register(customer);
-        expect(mockCustomerRepo.saveCustomer).toHaveBeenCalledWith({ firstname: "Fred", 
-                                                                     lastname: "Flintstone", 
-                                                                     email: "fred@flintstones.rock" });
+        expect(mockCustomerRepo.saveCustomer).toHaveBeenCalledWith({ firstname: firstname, 
+                                                                     lastname: lastname, 
+                                                                     email: email });
     });
 
 

@@ -14,6 +14,8 @@ export default class RegisterCustomerUseCase {
         const existingCustomer = this.customerRepo.getCustomer(customer.email);
         if (existingCustomer)
             throw new DuplicateCustomerEmailAddress(customer.email);
+
+        this.customerRepo.saveCustomer();
     }
 
     private validate(customer: Customer) {

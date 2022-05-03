@@ -1,7 +1,6 @@
-export default class Customer {
+export default class CustomerRegistration {
 
     constructor(
-        public readonly id: string,
         public readonly firstname: string,
         public readonly lastname: string,
         public readonly email: string) { }

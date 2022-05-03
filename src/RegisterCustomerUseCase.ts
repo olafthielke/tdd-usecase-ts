@@ -2,6 +2,7 @@ import Customer from "./Customer";
 import { DuplicateCustomerEmailAddress, MissingEmailAddress, MissingFirstName, MissingLastName } from "./errors";
 import ICustomerRepository from "./ICustomerRepository";
 import { v4 as uuidv4 } from 'uuid';
+import CustomerRegistration from "./CustomerRegistration";
 
 export default class RegisterCustomerUseCase {
 
@@ -9,23 +10,23 @@ export default class RegisterCustomerUseCase {
 
     }
 
-    public register(customer: Customer) {
-        this.validate(customer);
+    public register(registration: CustomerRegistration) {
+        this.validate(registration);
 
-        customer.id = uuidv4();
+        const customer = new Customer(uuidv4(), registration.firstname, registration.lastname, registration.email);
 
         this.customerRepo.saveCustomer(customer);
     }
 
-    private validate(customer: Customer) {
-        if (!customer.firstname)
+    private validate(registration: CustomerRegistration) {
+        if (!registration.firstname)
             throw new MissingFirstName();
-        if (!customer.lastname)
+        if (!registration.lastname)
             throw new MissingLastName();
-        if (!customer.email)
+        if (!registration.email)
             throw new MissingEmailAddress();
-        const existingCustomer = this.customerRepo.getCustomer(customer.email);
+        const existingCustomer = this.customerRepo.getCustomer(registration.email);
         if (existingCustomer)
-            throw new DuplicateCustomerEmailAddress(customer.email);
+            throw new DuplicateCustomerEmailAddress(registration.email);
     }
 }

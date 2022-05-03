@@ -50,7 +50,7 @@ describe("When call register()", () => {
 
     it("for new customer, Then save customer to the system.", () =>{
         const customer = new Customer("Fred", "Flintstone", "fred@flintstones.rock");
-        const mockCustomerRepo = setupMockCustomerRepo(customer);
+        const mockCustomerRepo = setupMockCustomerRepo();
         const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
         usecase.register(customer);
         expect(mockCustomerRepo.saveCustomer).toHaveBeenCalled();
@@ -59,7 +59,8 @@ describe("When call register()", () => {
 
     function setupMockCustomerRepo(getCustomerReturnValue: Customer | null = null): ICustomerRepository {
         return {
-            getCustomer: jest.fn(() => { return getCustomerReturnValue; })
+            getCustomer: jest.fn(() => { return getCustomerReturnValue; }),
+            saveCustomer: jest.fn(() => {})
         };
     }
 

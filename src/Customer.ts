@@ -4,5 +4,6 @@ export default class Customer {
         public readonly id: string,
         public readonly firstname: string,
         public readonly lastname: string,
-        public readonly email: string) { }
+        public readonly email: string) {     
+    }
 }

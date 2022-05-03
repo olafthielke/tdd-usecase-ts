@@ -7,20 +7,23 @@ import Customer from "../src/Customer";
 describe("When call register()", () => {
 
     it("without customer.firstname, Then throw MissingFirstName error.", () => {
+        const customer = new Customer("", "Flintstone", "fred@flintstones.rock");
         const usecase = new RegisterCustomerUseCase(<any>{});
-        const register = () => usecase.register({ firstname: "", lastname: "Flintstone", email: "fred@flintstones.rock" });
+        const register = () => usecase.register(customer);
         verifyThrowMissingFirstName(register);
     });
 
     it("without customer.lastname, Then throw MissingLastName error.", () => {
+        const customer = new Customer("Fred", "", "fred@flintstones.rock");
         const usecase = new RegisterCustomerUseCase(<any>{});
-        const register = () => usecase.register({ firstname: "Fred", lastname: "", email: "fred@flintstones.rock" });
+        const register = () => usecase.register(customer);
         verifyThrowMissingLastName(register);
     });
 
     it("without customer.email, Then throw MissingEmailAddress error.", () => {
+        const customer = new Customer("Fred", "flintstone", "");
         const usecase = new RegisterCustomerUseCase(<any>{});
-        const register = () => usecase.register({ firstname: "Fred", lastname: "Flintstone", email: "" });
+        const register = () => usecase.register(customer);
         verifyThrowMissingEmailAddress(register);
     });
 

@@ -1,13 +1,14 @@
 import { DuplicateCustomerEmailAddress } from "./errors";
 import ICustomerRepository from "./ICustomerRepository";
 import CustomerRegistration from "./CustomerRegistration";
+import Customer from "./Customer";
 
 export default class RegisterCustomerUseCase {
 
     constructor(private readonly customerRepo: ICustomerRepository) {
     }
 
-    public register(registration: CustomerRegistration) {
+    public async register(registration: CustomerRegistration): Promise<Customer> {
         this.validate(registration);
         const customer = registration.ToCustomer();
         this.customerRepo.saveCustomer(customer);

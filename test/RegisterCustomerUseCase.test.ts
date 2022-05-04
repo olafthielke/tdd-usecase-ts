@@ -10,21 +10,21 @@ describe("When call register()", () => {
     it("without registration.firstname, Then throw MissingFirstName error.", () => {
         const registration = new CustomerRegistration("", "Flintstone", "fred@flintstones.rock");
         const usecase = new RegisterCustomerUseCase(<any>{});
-        const register = () => usecase.register(registration);
+        const register = async () => await usecase.register(registration);
         verifyThrowMissingFirstName(register);
     });
 
     it("without registration.lastname, Then throw MissingLastName error.", () => {
         const registration = new CustomerRegistration("Fred", "", "fred@flintstones.rock");
         const usecase = new RegisterCustomerUseCase(<any>{});
-        const register = () => usecase.register(registration);
+        const register = async () => await usecase.register(registration);
         verifyThrowMissingLastName(register);
     });
 
     it("without registration.email, Then throw MissingEmailAddress error.", () => {
         const registration = new CustomerRegistration("Fred", "flintstone", "");
         const usecase = new RegisterCustomerUseCase(<any>{});
-        const register = () => usecase.register(registration);
+        const register = async () => await usecase.register(registration);
         verifyThrowMissingEmailAddress(register);
     });
 
@@ -32,11 +32,11 @@ describe("When call register()", () => {
              ["barney.rubble@rockwell.com", "Barney", "Rubble"],
              ["wilma@flintstones.rock", "Wilma", "Flintstone"]])
     ("for a valid customer registration with email address %s, Then call out to CustomerRepository to try and get customer by email address.", 
-    (email, firstname, lastname) => {
+    async (email, firstname, lastname) => {
         const registration = new CustomerRegistration(firstname, lastname, email);
         const mockCustomerRepo = setupMockCustomerRepo();
         const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
-        usecase.register(registration);
+        await usecase.register(registration);
         expect(mockCustomerRepo.getCustomer).toHaveBeenCalledWith(registration.email);
     });
 
@@ -44,12 +44,12 @@ describe("When call register()", () => {
              ["barney.rubble@rockwell.com", "Barney", "Rubble"],
              ["wilma@flintstones.rock", "Wilma", "Flintstone"]])
     ("for customer registration with email address %s that already exists in the system, Then throw DuplicateCustomerEmailAddress error.", 
-    (email, firstname, lastname) => {
+    async (email, firstname, lastname) => {
         const registration = new CustomerRegistration(firstname, lastname, email);
         const customer = new Customer("some uuid", firstname, lastname, email);
         const mockCustomerRepo = setupMockCustomerRepo(customer);
         const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
-        const register = () => usecase.register(registration);
+        const register = async () => usecase.register(registration);
         verifyThrowDuplicateCustomerEmailAddress(register, email);
     });
 
@@ -57,11 +57,11 @@ describe("When call register()", () => {
              ["Barney", "Rubble", "barney.rubble@rockwell.com"],
              ["Wilma", "Flintstone", "wilma@flintstones.rock"]])
     ("for new customer %s %s with email address %s, Then save customer to the system.", 
-    (firstname, lastname, email) => {
+    async (firstname, lastname, email) => {
         const registration = new CustomerRegistration(firstname, lastname, email);
         const mockCustomerRepo = setupMockCustomerRepo();
         const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
-        usecase.register(registration);
+        await usecase.register(registration);
         verifyCallToSaveCustomer(mockCustomerRepo, firstname, lastname, email);
     });
 
@@ -69,11 +69,11 @@ describe("When call register()", () => {
              ["Barney", "Rubble", "barney.rubble@rockwell.com"],
              ["Wilma", "Flintstone", "wilma@flintstones.rock"]])
     ("and registration of new customer %s %s with email address %s was successful, Then return the customer.", 
-    (firstname, lastname, email) => {
+    async (firstname, lastname, email) => {
         const registration = new CustomerRegistration(firstname, lastname, email);
         const mockCustomerRepo = setupMockCustomerRepo();
         const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
-        const customer = usecase.register(registration);
+        const customer = await usecase.register(registration);
         verifyCustomer(customer, firstname, lastname, email);
     });
 
@@ -86,31 +86,23 @@ describe("When call register()", () => {
     }
 
     function verifyThrowMissingFirstName(register: () => void) {
-        expect(register).toThrow(new MissingFirstName());
-        expect(register).toThrow("Missing first name.");
+        expect(register).rejects.toThrow(new MissingFirstName());
+        expect(register).rejects.toThrow("Missing first name.");
     }
 
     function verifyThrowMissingLastName(register: () => void) {
-        expect(register).toThrow(new MissingLastName());
-        expect(register).toThrow("Missing last name.");
+        expect(register).rejects.toThrow(new MissingLastName());
+        expect(register).rejects.toThrow("Missing last name.");
     }
 
     function verifyThrowMissingEmailAddress(register: () => void) {
-        expect(register).toThrow(new MissingEmailAddress());
-        expect(register).toThrow("Missing email address.");
+        expect(register).rejects.toThrow(new MissingEmailAddress());
+        expect(register).rejects.toThrow("Missing email address.");
     }
 
     function verifyThrowDuplicateCustomerEmailAddress(register: () => void, email: string) {
-        expect(register).toThrow(DuplicateCustomerEmailAddress);
-        expect(register).toThrow(`Customer with email address '${email}' already exists.`);
-    }
-
-    function expectedCustomer(firstname: string, lastname: string, email: string): Customer  {
-        return { 
-            firstname: firstname,
-            lastname: lastname,
-            email: email,
-            id: expect.any(String) }; // uuid
+        expect(register).rejects.toThrow(DuplicateCustomerEmailAddress);
+        expect(register).rejects.toThrow(`Customer with email address '${email}' already exists.`);
     }
 
     function verifyCallToSaveCustomer(mockCustomerRepo: ICustomerRepository, firstname: string, lastname: string, email: string) {
@@ -119,5 +111,13 @@ describe("When call register()", () => {
 
     function verifyCustomer(actual: Customer, firstname: string, lastname: string, email: string) {
         expect(actual).toEqual(expectedCustomer(firstname, lastname, email));
+    }
+
+    function expectedCustomer(firstname: string, lastname: string, email: string): Customer  {
+        return { 
+            firstname: firstname,
+            lastname: lastname,
+            email: email,
+            id: expect.any(String) }; // uuid
     }
 });

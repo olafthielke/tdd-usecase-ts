@@ -68,14 +68,18 @@ describe("When call register()", () => {
                                                                      id: expect.any(String) }); // uuid
     });
 
-    it("and registration of this new customer was successful, Then return the customer.", () => {
-        const registration = new CustomerRegistration("Fred", "Flintstone", "fred@flintstones.rock");
+    it.each([["Fred", "Flintstone", "fred@flintstones.rock"],
+             ["Barney", "Rubble", "barney.rubble@rockwell.com"],
+             ["Wilma", "Flintstone", "wilma@flintstones.rock"]])
+    ("and registration of new customer %s %s with email address %s was successful, Then return the customer.", 
+    (firstname, lastname, email) => {
+        const registration = new CustomerRegistration(firstname, lastname, email);
         const mockCustomerRepo = setupMockCustomerRepo();
         const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
         const customer = usecase.register(registration);
-        expect(customer).toEqual({ firstname: "Fred",
-                                   lastname: "Flintstone",
-                                   email: "fred@flintstones.rock",
+        expect(customer).toEqual({ firstname: firstname,
+                                   lastname: lastname,
+                                   email: email,
                                    id: expect.any(String) });
     });
 

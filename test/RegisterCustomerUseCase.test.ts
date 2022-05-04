@@ -62,10 +62,7 @@ describe("When call register()", () => {
         const mockCustomerRepo = setupMockCustomerRepo();
         const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
         usecase.register(registration);
-        expect(mockCustomerRepo.saveCustomer).toHaveBeenCalledWith({ firstname: firstname,
-                                                                     lastname: lastname,
-                                                                     email: email,
-                                                                     id: expect.any(String) }); // uuid
+        verifyCallToSaveCustomer(mockCustomerRepo, firstname, lastname, email);
     });
 
     it.each([["Fred", "Flintstone", "fred@flintstones.rock"],
@@ -77,10 +74,7 @@ describe("When call register()", () => {
         const mockCustomerRepo = setupMockCustomerRepo();
         const usecase = new RegisterCustomerUseCase(mockCustomerRepo);
         const customer = usecase.register(registration);
-        expect(customer).toEqual({ firstname: firstname,
-                                   lastname: lastname,
-                                   email: email,
-                                   id: expect.any(String) });
+        verifyCustomer(customer, firstname, lastname, email);
     });
 
 
@@ -110,5 +104,20 @@ describe("When call register()", () => {
         expect(register).toThrow(DuplicateCustomerEmailAddress);
         expect(register).toThrow(`Customer with email address '${email}' already exists.`);
     }
-});
 
+    function expectedCustomer(firstname: string, lastname: string, email: string): Customer  {
+        return { 
+            firstname: firstname,
+            lastname: lastname,
+            email: email,
+            id: expect.any(String) }; // uuid
+    }
+
+    function verifyCallToSaveCustomer(mockCustomerRepo: ICustomerRepository, firstname: string, lastname: string, email: string) {
+        expect(mockCustomerRepo.saveCustomer).toHaveBeenCalledWith(expectedCustomer(firstname, lastname, email));
+    }
+
+    function verifyCustomer(actual: Customer, firstname: string, lastname: string, email: string) {
+        expect(actual).toEqual(expectedCustomer(firstname, lastname, email));
+    }
+});
